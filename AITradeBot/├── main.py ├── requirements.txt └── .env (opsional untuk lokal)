@@ -1,0 +1,33 @@
+from telegram import Update
+from telegram.ext import Updater, CommandHandler, CallbackContext
+import os
+
+# Ambil TOKEN dari environment variable (nanti kamu atur di Render)
+TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+
+# Fungsi ketika kirim /start
+def start(update: Update, context: CallbackContext):
+    update.message.reply_text("✅ Bot Aris aktif!\nKetik /sinyal untuk lihat sinyal hari ini 📈")
+
+# Fungsi bantuan
+def help_command(update: Update, context: CallbackContext):
+    update.message.reply_text("📌 Perintah:\n/start - Mulai bot\n/sinyal - Dapatkan sinyal")
+
+# Fungsi sinyal dummy (nanti diganti AI + Bitget)
+def sinyal(update: Update, context: CallbackContext):
+    update.message.reply_text("🚀 Sinyal hari ini:\nBELI WIF di $0.1345\nTP1 $0.1520 | SL $0.1290")
+
+# Fungsi utama bot
+def main():
+    updater = Updater(TOKEN, use_context=True)
+    dp = updater.dispatcher
+
+    dp.add_handler(CommandHandler("start", start))
+    dp.add_handler(CommandHandler("help", help_command))
+    dp.add_handler(CommandHandler("sinyal", sinyal))
+
+    updater.start_polling()
+    updater.idle()
+
+if __name__ == "__main__":
+    main()
